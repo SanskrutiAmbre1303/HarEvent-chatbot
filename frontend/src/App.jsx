@@ -6,12 +6,22 @@ const API_URL = "http://localhost:5000/api/chat";
 
 const initialMessage = {
   sender: "bot",
-  text: "Hi! Welcome to HarEvent. How can I help you today?",
+  text: "Hi! Welcome to HarEvent! 👋\n\nI'm NiDi, your personal guide. How can I help you today?",
 };
 
 const initialOptions = [
-  { label: "Customer", value: "customer" },
-  { label: "Vendor", value: "vendor" },
+  {
+    label: "I'm a Customer",
+    description: "Explore vendors, services and events.",
+    value: "customer",
+    icon: "🔍",
+  },
+  {
+    label: "I'm a Vendor",
+    description: "Register your business and grow with HarEvent.",
+    value: "vendor",
+    icon: "🏪",
+  },
 ];
 
 function App() {
@@ -19,7 +29,13 @@ function App() {
   const [messages, setMessages] = useState([initialMessage]);
   const [options, setOptions] = useState(initialOptions);
   const [loading, setLoading] = useState(false);
+
   const messagesEndRef = useRef(null);
+
+  const isWelcomeScreen =
+    messages.length === 1 &&
+    messages[0].sender === "bot" &&
+    options === initialOptions;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -28,9 +44,8 @@ function App() {
   async function handleOptionClick(option) {
     if (loading) return;
 
-    // Main menu and Start again clear the complete conversation.
     if (
-      ["start", "restart", "main_menu"].includes(option.value) ||
+      ["start", "restart", "main_menu", "start_again"].includes(option.value) ||
       ["Start again", "Main menu"].includes(option.label)
     ) {
       setMessages([initialMessage]);
@@ -38,7 +53,6 @@ function App() {
       return;
     }
 
-    // Display the selected option.
     setMessages((previous) => [
       ...previous,
       { sender: "user", text: option.label },
@@ -99,10 +113,20 @@ function App() {
     <div className="chatbot-container">
       {isOpen ? (
         <div className="chatbot-window">
+
           <div className="chatbot-header">
-            <div>
-              <h2>HarEvent Assistant</h2>
-              <p>Your event planning helper</p>
+            <div className="header-profile">
+              <div className="bot-avatar">💬</div>
+
+              <div className="header-details">
+                <h2>Chat with NiDi</h2>
+                <p>Your Personal HarEvent Guide</p>
+              </div>
+            </div>
+
+            <div className="online-status">
+              <span className="online-dot"></span>
+              Online
             </div>
 
             <button
@@ -129,6 +153,12 @@ function App() {
               </div>
             ))}
 
+            {isWelcomeScreen && (
+              <div className="journey-heading">
+                Choose your journey:
+              </div>
+            )}
+
             {loading && (
               <div className="message bot">
                 Please wait, I'm thinking...
@@ -138,21 +168,39 @@ function App() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="chatbot-options">
+          <div className={`chatbot-options ${isWelcomeScreen ? "welcome-options" : ""}`}>
             {options.map((option) => (
               <button
                 type="button"
                 key={`${option.value}-${option.label}`}
-                className="option-button"
+                className={`option-button ${isWelcomeScreen ? "journey-card" : ""}`}
                 onClick={() => handleOptionClick(option)}
                 disabled={loading}
               >
-                {option.label}
+                {isWelcomeScreen ? (
+                  <>
+                    <span className="journey-icon">{option.icon}</span>
+
+                    <span className="journey-content">
+                      <strong>{option.label}</strong>
+                      <small>{option.description}</small>
+                    </span>
+
+                    <span className="journey-arrow">›</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{option.label}</span>
+                    <span className="option-arrow">›</span>
+                  </>
+                )}
               </button>
             ))}
           </div>
 
-          <div className="chatbot-footer">Powered by HarEvent</div>
+          <div className="chatbot-footer">
+            Powered by <strong>HarEvent</strong>
+          </div>
         </div>
       ) : (
         <button
@@ -160,7 +208,7 @@ function App() {
           className="chatbot-launch-button"
           onClick={() => setIsOpen(true)}
         >
-          Chat with us
+          💬 Chat with NiDi
         </button>
       )}
     </div>
