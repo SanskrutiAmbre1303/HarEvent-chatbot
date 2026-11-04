@@ -670,7 +670,51 @@ customer_contact_support: {
       { label: "Main Menu", value: "main_menu" },
     ],
   },
+// HOW LONG DOES APPROVAL TAKE?
+  vendor_approval_time: {
+  message: "HarEvent has not specified a fixed approval timeline. The time required may depend on the verification process. Please check your Vendor Dashboard or contact HarEvent Support for an update.",
+  options: [
+    {
+      label: "How can I check my approval status?",
+      value: "vendor_check_approval"
+    },
+    {
+      label: "Contact Vendor Support",
+      value: "vendor_support"
+    },
+    {
+      label: "Back to Vendor Menu",
+      value: "vendor"
+    },
+    {
+      label: "Main Menu",
+      value: "main_menu"
+    }
+  ]
+},
 
+// CAN I UPLOAD PHOTOS AND VIDEOS?
+vendor_upload_media: {
+  message: "Yes! You can upload photos, albums and videos through your Vendor Dashboard. The proposed Basic Package includes up to 5 photos and 1 video. The Gold Package includes up to 10 photo albums. Please check your selected package for applicable upload limits.",
+  options: [
+    {
+      label: "What are Vendor Packages?",
+      value: "vendor_packages"
+    },
+    {
+      label: "How can I create my Vendor Profile?",
+      value: "vendor_create_profile"
+    },
+    {
+      label: "Back to Previous Question",
+      value: "vendor_registration_requirements"
+    },
+    {
+      label: "Main Menu",
+      value: "main_menu"
+    }
+  ]
+},
   // 5. HOW CAN I CREATE MY VENDOR PROFILE?
 
   vendor_create_profile: {
